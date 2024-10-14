@@ -63,14 +63,8 @@ if st.checkbox("Mostrar Comparación de Tarifas"):
                                           color_continuous_scale=px.colors.sequential.Viridis)
         st.plotly_chart(fig_price_comparison)
 
-# Exploración Adicional de Datos
-st.subheader("Exploración Adicional de Datos")
-if st.checkbox("Mostrar Gráfico de Distribución de Edades"):
-    fig_age_distribution = px.histogram(df, x='Age', title='Distribución de Edades de los Pasajeros',
-                                        labels={'Age': 'Edad'},
-                                        color_discrete_sequence=px.colors.qualitative.Pastel)
-    st.plotly_chart(fig_age_distribution)
-
+# Gráfico de Supervivencia por Clase
+st.subheader("Supervivencia por Clase")
 if st.checkbox("Mostrar Gráfico de Supervivencia por Clase"):
     fig_survival_class = px.histogram(df, x='Pclass', color='Survived',
                                       title='Supervivencia por Clase',
@@ -78,3 +72,11 @@ if st.checkbox("Mostrar Gráfico de Supervivencia por Clase"):
                                               'Survived': 'Supervivencia'},
                                       color_discrete_sequence=px.colors.qualitative.Pastel)
     st.plotly_chart(fig_survival_class)
+
+# Gráfico de Distribución de Edades
+st.subheader("Distribución de Edades de los Pasajeros")
+if st.checkbox("Mostrar Gráfico de Distribución de Edades"):
+    fig_age_distribution = px.histogram(df, x='Age', title='Distribución de Edades de los Pasajeros',
+                                        labels={'Age': 'Edad'},
+                                        color_discrete_sequence=px.colors.qualitative.Pastel)
+    st.plotly_chart(fig_age_distribution)
