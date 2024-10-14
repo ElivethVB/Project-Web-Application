@@ -6,27 +6,44 @@ import plotly.express as px
 # Asegúrate de que el archivo CSV esté en la misma carpeta
 df = pd.read_csv('titanic.csv')
 
-# Encabezado
-st.header("Análisis Exploratorio del Titanic")
+# Encabezado de la aplicación
+st.header("Titanic Data Explorer")
 
-# Casillas de verificación para seleccionar gráficos
-histogram_checkbox = st.checkbox("Mostrar Histograma")
-scatter_checkbox = st.checkbox("Mostrar Diagrama de Dispersión")
+# 1. Visualizador de Datos
+st.subheader("Visualizador de Datos")
+st.write("Aquí puedes ver las primeras filas del conjunto de datos del Titanic.")
+st.dataframe(df.head())
 
-# Generar histograma si se selecciona la casilla
-if histogram_checkbox:
-    st.write("Histograma de Supervivencia")
-    fig_histogram = px.histogram(df, x='Survived', title='Supervivencia en el Titanic',
-                                 labels={'Survived': 'Supervivencia'},
-                                 color='Survived',
-                                 color_discrete_sequence=px.colors.qualitative.Pastel)
-    st.plotly_chart(fig_histogram)
+# 2. Tipos de Pasajeros
+st.subheader("Tipos de Pasajeros")
+st.write("Este gráfico muestra la distribución de los pasajeros según su clase.")
+fig_types = px.histogram(df, x='Pclass', title='Distribución de Pasajeros por Clase',
+                         labels={'Pclass': 'Clase'},
+                         color='Pclass',
+                         color_discrete_sequence=px.colors.qualitative.Pastel)
+st.plotly_chart(fig_types)
 
-# Generar gráfico de dispersión si se selecciona la casilla
-if scatter_checkbox:
-    st.write("Diagrama de Dispersión de Edad vs. Tarifa")
-    fig_scatter = px.scatter(df, x='Age', y='Fare', color='Survived',
-                             title='Edad vs. Tarifa según Supervivencia',
-                             labels={'Age': 'Edad', 'Fare': 'Tarifa'},
-                             color_discrete_sequence=px.colors.qualitative.Pastel)
-    st.plotly_chart(fig_scatter)
+# 3. Histograma de Comparación
+st.subheader("Histograma de Comparación de Supervivencia por Sexo")
+fig_comparison = px.histogram(df, x='Sex', color='Survived', title='Comparación de Supervivencia por Sexo',
+                              labels={'Sex': 'Sexo',
+                                      'Survived': 'Supervivencia'},
+                              color_discrete_sequence=px.colors.qualitative.Pastel)
+st.plotly_chart(fig_comparison)
+
+# 4. Comparación de Precios de Pasajes
+st.subheader("Comparación de Precios de Pasajes por Clase")
+st.write("Selecciona una clase para comparar los precios de los pasajes.")
+class_options = df['Pclass'].unique()
+selected_class = st.selectbox("Selecciona una Clase", class_options)
+
+# Filtrar datos según la clase seleccionada
+filtered_data = df[df['Pclass'] == selected_class]
+
+if not filtered_data.empty:
+    fig_price_comparison = px.box(filtered_data, x='Pclass', y='Fare', title=f'Comparación de Precios de Pasajes en Clase {selected_class}',
+                                  labels={'Fare': 'Tarifa'},
+                                  color='Pclass')
+    st.plotly_chart(fig_price_comparison)
+else:
+    st.write("No hay datos disponibles para la clase seleccionada.")
