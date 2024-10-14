@@ -32,7 +32,7 @@ if st.checkbox("Mostrar Histograma de Supervivencia por Sexo"):
                                   color_discrete_sequence=px.colors.qualitative.Pastel)
     st.plotly_chart(fig_comparison)
 
-# 4. Comparación de Precios de Pasajes
+# 4. Comparación de Tarifas
 st.subheader("Comparación de Tarifas")
 st.write("Selecciona una variable para comparar con las tarifas de los pasajes.")
 
@@ -63,17 +63,18 @@ if st.checkbox("Mostrar Comparación de Tarifas"):
                                           color_continuous_scale=px.colors.sequential.Viridis)
         st.plotly_chart(fig_price_comparison)
 
-# Nuevos Gráficos
-st.subheader("Gráficos Adicionales")
-if st.checkbox("Mostrar Gráfico de Supervivencia por Edad"):
-    fig_age_survival = px.histogram(df, x='Age', color='Survived', title='Supervivencia según Edad',
-                                    labels={'Age': 'Edad',
-                                            'Survived': 'Supervivencia'},
-                                    color_discrete_sequence=px.colors.qualitative.Pastel)
-    st.plotly_chart(fig_age_survival)
+# Exploración Adicional de Datos
+st.subheader("Exploración Adicional de Datos")
+if st.checkbox("Mostrar Gráfico de Distribución de Edades"):
+    fig_age_distribution = px.histogram(df, x='Age', title='Distribución de Edades de los Pasajeros',
+                                        labels={'Age': 'Edad'},
+                                        color_discrete_sequence=px.colors.qualitative.Pastel)
+    st.plotly_chart(fig_age_distribution)
 
-if st.checkbox("Mostrar Gráfico de Tarifas por Sexo"):
-    fig_fare_sex = px.box(df, x='Sex', y='Fare', title='Distribución de Tarifas por Sexo',
-                          labels={'Fare': 'Tarifa', 'Sex': 'Sexo'},
-                          color='Sex')
-    st.plotly_chart(fig_fare_sex)
+if st.checkbox("Mostrar Gráfico de Supervivencia por Clase"):
+    fig_survival_class = px.histogram(df, x='Pclass', color='Survived',
+                                      title='Supervivencia por Clase',
+                                      labels={'Pclass': 'Clase',
+                                              'Survived': 'Supervivencia'},
+                                      color_discrete_sequence=px.colors.qualitative.Pastel)
+    st.plotly_chart(fig_survival_class)
