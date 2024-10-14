@@ -15,15 +15,15 @@ st.write("Aquí puedes ver las primeras filas del conjunto de datos del Titanic.
 st.dataframe(df.head())
 
 # 2. Tipos de Pasajeros
-st.subheader("Tipos de Pasajeros")
-if st.checkbox("Mostrar Distribución de Pasajeros por Clase"):
+st.subheader("Distribución de Pasajeros por Clase")
+if st.checkbox("Mostrar Distribución de Pasajeros"):
     fig_types = px.histogram(df, x='Pclass', title='Distribución de Pasajeros por Clase',
                              labels={'Pclass': 'Clase'},
                              color='Pclass',
                              color_discrete_sequence=px.colors.qualitative.Pastel)
     st.plotly_chart(fig_types)
 
-# 3. Histograma de Comparación
+# 3. Histograma de Comparación de Supervivencia
 st.subheader("Comparación de Supervivencia por Sexo")
 if st.checkbox("Mostrar Histograma de Supervivencia por Sexo"):
     fig_comparison = px.histogram(df, x='Sex', color='Survived', title='Comparación de Supervivencia por Sexo',
@@ -33,22 +33,35 @@ if st.checkbox("Mostrar Histograma de Supervivencia por Sexo"):
     st.plotly_chart(fig_comparison)
 
 # 4. Comparación de Precios de Pasajes
-st.subheader("Comparación de Precios de Pasajes por Clase")
-st.write("Selecciona una clase para comparar los precios de los pasajes.")
-class_options = df['Pclass'].unique()
-selected_class = st.selectbox("Selecciona una Clase", class_options)
+st.subheader("Comparación de Tarifas")
+st.write("Selecciona una variable para comparar con las tarifas de los pasajes.")
 
-# Filtrar datos según la clase seleccionada
-filtered_data = df[df['Pclass'] == selected_class]
+# Opciones para comparar
+comparison_options = ['Clase', 'Sexo', 'Edad']
+comparison_variable = st.selectbox(
+    "Selecciona la variable a comparar", comparison_options)
 
-if st.checkbox("Mostrar Comparación de Precios de Pasajes"):
-    if not filtered_data.empty:
-        fig_price_comparison = px.box(filtered_data, x='Pclass', y='Fare', title=f'Comparación de Precios de Pasajes en Clase {selected_class}',
-                                      labels={'Fare': 'Tarifa'},
+if st.checkbox("Mostrar Comparación de Tarifas"):
+    if comparison_variable == 'Clase':
+        fig_price_comparison = px.box(df, x='Pclass', y='Fare', title='Comparación de Tarifas por Clase',
+                                      labels={'Fare': 'Tarifa',
+                                              'Pclass': 'Clase'},
                                       color='Pclass')
         st.plotly_chart(fig_price_comparison)
-    else:
-        st.write("No hay datos disponibles para la clase seleccionada.")
+
+    elif comparison_variable == 'Sexo':
+        fig_price_comparison = px.box(df, x='Sex', y='Fare', title='Comparación de Tarifas por Sexo',
+                                      labels={'Fare': 'Tarifa', 'Sex': 'Sexo'},
+                                      color='Sex')
+        st.plotly_chart(fig_price_comparison)
+
+    elif comparison_variable == 'Edad':
+        fig_price_comparison = px.scatter(df, x='Age', y='Fare', color='Survived',
+                                          title='Comparación de Tarifas según Edad',
+                                          labels={'Fare': 'Tarifa',
+                                                  'Age': 'Edad'},
+                                          color_continuous_scale=px.colors.sequential.Viridis)
+        st.plotly_chart(fig_price_comparison)
 
 # Nuevos Gráficos
 st.subheader("Gráficos Adicionales")
