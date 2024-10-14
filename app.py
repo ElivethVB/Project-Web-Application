@@ -41,27 +41,25 @@ comparison_options = ['Clase', 'Sexo', 'Edad']
 comparison_variable = st.selectbox(
     "Selecciona la variable a comparar", comparison_options)
 
-if st.checkbox("Mostrar Comparación de Tarifas"):
-    if comparison_variable == 'Clase':
-        fig_price_comparison = px.box(df, x='Pclass', y='Fare', title='Comparación de Tarifas por Clase',
-                                      labels={'Fare': 'Tarifa',
-                                              'Pclass': 'Clase'},
-                                      color='Pclass')
-        st.plotly_chart(fig_price_comparison)
+# Mostrar automáticamente la comparación de tarifas según la variable seleccionada
+if comparison_variable == 'Clase':
+    fig_price_comparison = px.box(df, x='Pclass', y='Fare', title='Comparación de Tarifas por Clase',
+                                  labels={'Fare': 'Tarifa', 'Pclass': 'Clase'},
+                                  color='Pclass')
+    st.plotly_chart(fig_price_comparison)
 
-    elif comparison_variable == 'Sexo':
-        fig_price_comparison = px.box(df, x='Sex', y='Fare', title='Comparación de Tarifas por Sexo',
-                                      labels={'Fare': 'Tarifa', 'Sex': 'Sexo'},
-                                      color='Sex')
-        st.plotly_chart(fig_price_comparison)
+elif comparison_variable == 'Sexo':
+    fig_price_comparison = px.box(df, x='Sex', y='Fare', title='Comparación de Tarifas por Sexo',
+                                  labels={'Fare': 'Tarifa', 'Sex': 'Sexo'},
+                                  color='Sex')
+    st.plotly_chart(fig_price_comparison)
 
-    elif comparison_variable == 'Edad':
-        fig_price_comparison = px.scatter(df, x='Age', y='Fare', color='Survived',
-                                          title='Comparación de Tarifas según Edad',
-                                          labels={'Fare': 'Tarifa',
-                                                  'Age': 'Edad'},
-                                          color_continuous_scale=px.colors.sequential.Viridis)
-        st.plotly_chart(fig_price_comparison)
+elif comparison_variable == 'Edad':
+    fig_price_comparison = px.scatter(df, x='Age', y='Fare', color='Survived',
+                                      title='Comparación de Tarifas según Edad',
+                                      labels={'Fare': 'Tarifa', 'Age': 'Edad'},
+                                      color_continuous_scale=px.colors.sequential.Viridis)
+    st.plotly_chart(fig_price_comparison)
 
 # Gráfico de Supervivencia por Clase
 st.subheader("Supervivencia por Clase")
